@@ -13,7 +13,7 @@ enable_teamcity = is_running_under_teamcity()
 
 
 class TeamcityReport(pep8.StandardReport):
-    name = 'teamcity'
+    name = 'teamcity-messages'
     version = __version__
 
     @classmethod
@@ -35,6 +35,11 @@ class TeamcityReport(pep8.StandardReport):
         options.reporter = TeamcityReport
         options.report = TeamcityReport(options)
         options.jobs = None  # needs to be disabled, flake8 overrides the report if enabled
+
+        messages = TeamcityServiceMessages()
+        messages.message(
+            'message',
+            text='%s %s enabled; __file__ = %s' % (cls.name, cls.version, __file__))
 
     def get_file_results(self):
         self._deferred_print.sort()
